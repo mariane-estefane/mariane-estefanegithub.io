@@ -51,10 +51,9 @@ class Biblioteca:
             return f"{usuario.nome} devolveu o livro '{livro.nome}'."
         else:
             return "Este livro não foi emprestado para este usuário."
-
 class BibliotecaGUI:
     def __init__(self, master):
-        self.master = ThemedTk(theme="equilux")  # Escolha um tema, neste caso, "equilux"
+        self.master = ThemedTk(theme="equilux")  
         self.master.title("Sistema de Gerenciamento de Biblioteca")
 
         self.biblioteca = Biblioteca()
@@ -77,8 +76,11 @@ class BibliotecaGUI:
         self.button_return = ttk.Button(self.frame, text="Realizar Devolução", command=self.realizar_devolucao)
         self.button_return.grid(row=4, column=0, pady=5)
 
+        self.button_show_books = ttk.Button(self.frame, text="Exibir Livros", command=self.exibir_livros)
+        self.button_show_books.grid(row=5, column=0, pady=5)
+
         self.button_exit = ttk.Button(self.frame, text="Sair", command=self.master.destroy)
-        self.button_exit.grid(row=5, column=0, pady=10)
+        self.button_exit.grid(row=6, column=0, pady=10)
 
     def cadastrar_usuario(self):
         user_name = self.get_input("Digite o nome do usuário:")
@@ -128,8 +130,18 @@ class BibliotecaGUI:
         else:
             messagebox.showerror("Erro", "Usuário ou livro não encontrado.")
 
+    def exibir_livros(self):
+        if self.biblioteca.livros:
+            for livro in self.biblioteca.livros:
+                print(f"Livro: {livro.nome}, Tema: {livro.tema}, Edição: {livro.edicao}")
+        else:
+            print("A biblioteca não possui livros.")
+
     def get_input(self, prompt):
         return simpledialog.askstring("Input", prompt)
+
+    def __del__(self):
+        self.master.destroy()
 
 if __name__ == "__main__":
     app = BibliotecaGUI(tk.Tk())
